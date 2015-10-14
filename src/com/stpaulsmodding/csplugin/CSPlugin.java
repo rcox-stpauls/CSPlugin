@@ -14,6 +14,7 @@ public class CSPlugin extends JavaPlugin {
 	public void onEnable() {
 		getServer().getPluginManager().registerEvents(new EventListener(this), this);
 		getCommand("").setExecutor(new PluginCommands(this));
+		
 		try {
 			File file = new File(getDataFolder(), "cached_blocks.log");
 			if (!file.exists()) {
