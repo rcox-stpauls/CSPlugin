@@ -2,6 +2,7 @@ name: CSPlugin
 main: com.stpaulsmodding.csplugin.CSPlugin
 version: 1.0
 description: >
-             A conglomerate of commands 'cause YOLO.
+             The airship minigame plugin.
 commands:
-  
+  airships:
+    description: The base command of the airship minigame plugin.
