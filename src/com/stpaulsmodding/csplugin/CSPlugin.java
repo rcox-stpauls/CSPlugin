@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -87,20 +88,10 @@ public class CSPlugin extends JavaPlugin {
 	
 	@SuppressWarnings("deprecation")
 	public void loadBlocksFromHashMap(SerializableShip ship, Location loc) {
-		
-		int shipXLength = Math.abs(ship.end.get(0)-ship.start.get(0));
-		int shipYLength = Math.abs(ship.end.get(1)-ship.start.get(1));
-		int shipZLength = Math.abs(ship.end.get(2)-ship.start.get(2));
-		int byteNumber = 0;
-		
-		for (int x = loc.getBlockX(); x <= shipXLength + loc.getBlockX(); x++) {
-			for (int y = loc.getBlockY(); y <= shipYLength + loc.getBlockY(); y++) {
-				for (int z = loc.getBlockZ(); z <= shipZLength + loc.getBlockZ(); z++) {
-					loc.getWorld().getBlockAt(x, y, z).setType(ship.lsM.get(byteNumber));
-					loc.getWorld().getBlockAt(x, y, z).setData(ship.ls.get(byteNumber));
-					byteNumber++;
-				}
-			}
+		for (Integer[] key : ship.blocks.keySet()) {
+			Block block = loc.getWorld().getBlockAt(key[0], key[1], key[2]);
+			block.setType((Material) ship.blocks.get(key)[0]);
+			block.setData((Byte) ship.blocks.get(key)[1]);
 		}
 	}
 }

@@ -1,34 +1,30 @@
 package com.stpaulsmodding.csplugin;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 public class SerializableShip implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	public List<Byte> ls = new ArrayList<Byte>();
-	public List<Material> lsM = new ArrayList<Material>();
-	public List<Integer> start = new ArrayList<Integer>();
-	public List<Integer> end = new ArrayList<Integer>();
+	public Map<Integer[], Object[]> blocks = new HashMap<Integer[], Object[]>();
+	public transient List<Block> rawBlocks;
 	
 	public SerializableShip(List<Block> ls) {
-		start.add(ls.get(0).getX());
-		start.add(ls.get(0).getY());
-		start.add(ls.get(0).getZ());
-		
-		end.add(ls.get(ls.size()-1).getX());
-		end.add(ls.get(ls.size()-1).getY());
-		end.add(ls.get(ls.size()-1).getZ());
-		
+		rawBlocks = ls;
 		for (Block block : ls) {
+			Integer[] coords = {block.getX(), block.getY(), block.getZ()};
 			@SuppressWarnings("deprecation")
-			byte data = block.getData();
-			this.ls.add(data);
-			this.lsM.add(block.getType());
+			Object[] data = {block.getType(), block.getData()};
+			
+			blocks.put(coords, data);
 		}
+	}
+	
+	public List<Block> getBlocks() {
+		return rawBlocks;
 	}
 }
