@@ -26,7 +26,6 @@ public class CSPlugin extends JavaPlugin {
 			File f = new File(getDataFolder() + File.separator);
 			if (!f.exists()) f.mkdir();
 			file = new File(getDataFolder(), "cached_blocks.ser");
-			file.createNewFile();
 			writer = new ObjectOutputStream(new FileOutputStream(file, true));
 			reader = new ObjectInputStream(new FileInputStream(file));
 		} catch (Exception e) {
