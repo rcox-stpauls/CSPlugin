@@ -19,27 +19,42 @@ public class PluginCommands implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (cmd.getName().equalsIgnoreCase("airships")) {
 			if (!(sender instanceof Player)) {
-				return false;
+				sender.sendMessage("§c§o");
+				return true;
 			}
 			if (args.length < 1) {
-				return false;
+				return true;
 			}
 			Player player = (Player) sender;
 			
-			if (args[0].equalsIgnoreCase("setfirst")) {
-				firstSelection = player.getLocation();
-				player.sendMessage("First location set.");
-			} else if (args[0].equalsIgnoreCase("setsecond")) {
-				secondSelection = player.getLocation();
-				player.sendMessage("Second location set.");
-			} else if (args[0].equalsIgnoreCase("saveship")) {
-				plugin.wipeFile();
-				plugin.saveTo(plugin.getBlocksFromSelection(player.getWorld(), firstSelection, secondSelection));
-			} else if (args[0].equalsIgnoreCase("loadship")) {
-				plugin.loadBlocksFromHashMap(plugin.loadFile(), player.getLocation());
+			switch (args[0].toLowerCase()) {
+				case "setfirst":
+					firstSelection = player.getLocation();
+					player.sendMessage("§a§oFirst location set!");
+					break;
+				case "setsecond":
+					secondSelection = player.getLocation();
+					player.sendMessage("§a§oSecond location set!");
+					break;
+				case "saveship":
+					if (firstSelection == null || secondSelection == null) {
+						player.sendMessage("§c§oSet both corners of the region before saving a ship. Do this with:");
+						player.sendMessage("§c§o/airships setfirst, and /airships setsecond.");
+						break;
+					}
+					plugin.wipeFile();
+					plugin.saveTo(plugin.getBlocksFromSelection(player.getWorld(), firstSelection, secondSelection));
+					player.sendMessage("§a§oShip saved!");
+					break;
+				case "loadship":
+					plugin.loadBlocksFromHashMap(plugin.loadFile(), player.getLocation());
+					player.sendMessage("§a§oShip loaded!");
+					break;
+				default:
+					player.sendMessage("§c§oIncorrect argument. Type '/airships' to show valid arguments.");
 			}
 		}
 		
-		return false;
+		return true;
 	}
 }
