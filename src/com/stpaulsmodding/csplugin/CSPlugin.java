@@ -22,6 +22,7 @@ public class CSPlugin extends JavaPlugin {
 	public void onEnable() {
 		getServer().getPluginManager().registerEvents(new EventListener(this), this);
 		getCommand("airships").setExecutor(new PluginCommands(this));
+		getCommand("").setExecutor(new PluginCommands(this));
 		try {
 			file = new File(getDataFolder(), "cached_blocks.log");
 			if (!file.exists()) {
