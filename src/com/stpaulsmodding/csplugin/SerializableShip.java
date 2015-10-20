@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+
+import net.minecraft.server.v1_8_R3.World;
 
 public class SerializableShip implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -24,7 +27,7 @@ public class SerializableShip implements Serializable {
 		}
 	}
 	
-	public List<Block> getBlocks() {
-		return rawBlocks;
+	public World getWorld() {
+		return ((CraftWorld) rawBlocks.get(0).getWorld()).getHandle();
 	}
 }

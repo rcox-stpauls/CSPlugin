@@ -12,7 +12,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.block.CraftBlock;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import net.minecraft.server.v1_8_R3.EntityBat;
+import net.minecraft.server.v1_8_R3.EntityFallingBlock;
+import net.minecraft.server.v1_8_R3.IBlockData;
 
 public class CSPlugin extends JavaPlugin {
 	private ObjectOutputStream writer;
@@ -92,6 +97,22 @@ public class CSPlugin extends JavaPlugin {
 			Block block = loc.getWorld().getBlockAt(key[0], key[1], key[2]);
 			block.setType((Material) ship.blocks.get(key)[0]);
 			block.setData((Byte) ship.blocks.get(key)[1]);
+		}
+	}
+	
+	public void convertToEntities(SerializableShip ship) {
+		for (Block block : ship.rawBlocks) {
+			EntityBat bat = new EntityBat(ship.getWorld());
+			bat.setPosition(block.getX()+0.5D, block.getY()+0.5D, block.getZ()+0.5D);
+			bat.setInvisible(true);
+			
+			CraftBlock block1 = (CraftBlock) block;
+			EntityFallingBlock fall = new EntityFallingBlock(ship.getWorld(), block.getX(), block.getY(), block.getZ(), block1, block1.getData());
+			
+			ship.getWorld().addEntity(bat);
+			ship.getWorld().addEntity(fall);
+			
+			fall.mount(bat);
 		}
 	}
 }
